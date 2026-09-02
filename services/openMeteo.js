@@ -65,18 +65,26 @@ async function fetchLive(latitude, longitude) {
     `&hourly=${HOURLY_VARS.join(',')}` +
     `&windspeed_unit=ms&timezone=UTC&past_days=1&forecast_days=1`;
 
+  // HTTP 429 (rate limit) is per-minute and often affects shared hosting IPs;
+  // a short backoff-and-retry usually clears it without bothering the user.
   let res;
-  try {
-    res = await fetch(url, { signal: AbortSignal.timeout(10000) });
-  } catch (err) {
-    lastStatus = { state: 'unavailable', checkedAt: new Date().toISOString(), detail: err.message };
-    const e = new Error(`Open-Meteo request failed: ${err.message}`);
-    e.code = 'SOURCE_UNAVAILABLE';
-    throw e;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    } catch (err) {
+      lastStatus = { state: 'unavailable', checkedAt: new Date().toISOString(), detail: err.message };
+      const e = new Error(`Open-Meteo request failed: ${err.message}`);
+      e.code = 'SOURCE_UNAVAILABLE';
+      throw e;
+    }
+    if (res.status !== 429) break;
+    if (attempt < 3) await new Promise((r) => setTimeout(r, attempt * 4000));
   }
   if (!res.ok) {
     lastStatus = { state: 'error', checkedAt: new Date().toISOString(), detail: `HTTP ${res.status}` };
-    const e = new Error(`Open-Meteo returned HTTP ${res.status}`);
+    const e = new Error(res.status === 429
+      ? 'Open-Meteo is rate limiting this server (HTTP 429, retried 3x) — try again in a minute.'
+      : `Open-Meteo returned HTTP ${res.status}`);
     e.code = 'SOURCE_ERROR';
     throw e;
   }
