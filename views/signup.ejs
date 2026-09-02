@@ -1,0 +1,173 @@
+<%- include('partials/header', { title: 'Create account', bodyClass: 'auth', extraCss: ['/css/auth.css'] }) %>
+<%- include('partials/navbar') %>
+<main class="auth-main">
+  <div class="auth-box auth-box-wide">
+    <h1>Create your citizen account</h1>
+    <p class="auth-sub">The profile below personalizes your risk. It changes your HTSI only — the environmental
+       UTCI is the same for everyone at your location. Fields are self-reported and used only for this prototype.</p>
+    <form id="signup-form" novalidate>
+      <fieldset>
+        <legend>Personal</legend>
+        <label>Name <input name="name" required minlength="2"></label>
+        <label>Email <input type="email" name="email" required autocomplete="email"></label>
+        <label>Password (min 8 characters) <input type="password" name="password" required minlength="8" autocomplete="new-password"></label>
+        <label>Age <input type="number" name="age" min="0" max="120" required></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Occupation</legend>
+        <label>Occupation <input name="occupation" placeholder="e.g. Construction worker, Software engineer"></label>
+        <label>Occupation category
+          <select name="occupationCategory">
+            <option value="outdoor_labour">Outdoor labour</option>
+            <option value="outdoor_service">Outdoor service</option>
+            <option value="indoor_industrial">Indoor industrial</option>
+            <option value="indoor_service">Indoor service</option>
+            <option value="indoor_office" selected>Indoor office</option>
+            <option value="domestic">Domestic / student / retired</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Vulnerability</legend>
+        <label>Health-risk category
+          <select name="healthRiskCategory">
+            <option value="low" selected>Low</option>
+            <option value="moderate">Moderate</option>
+            <option value="high">High</option>
+            <option value="very_high">Very high</option>
+          </select>
+        </label>
+        <label>Health condition (if applicable)
+          <select name="healthCondition">
+            <option value="none" selected>None</option>
+            <option value="asthma">Asthma</option>
+            <option value="hypertension">Hypertension</option>
+            <option value="diabetes">Diabetes</option>
+            <option value="heart_disease">Heart disease</option>
+            <option value="kidney_disease">Kidney disease</option>
+            <option value="copd">COPD</option>
+          </select>
+        </label>
+        <label>More than one health condition?
+          <select name="multipleHealthConditions"><option value="no" selected>No</option><option value="yes">Yes</option></select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Exposure</legend>
+        <label>Outdoor exposure (hours per day) <input type="number" name="outdoorExposureHours" min="0" max="16" step="0.5" value="2"></label>
+        <label>Exposure category
+          <select name="exposureCategory">
+            <option value="low" selected>Low (&lt;2 h)</option>
+            <option value="moderate">Moderate (2–4 h)</option>
+            <option value="high">High (4–7 h)</option>
+            <option value="very_high">Very high (&gt;7 h)</option>
+          </select>
+        </label>
+        <label>Activity / exertion level
+          <select name="activityLevel">
+            <option value="light" selected>Light</option>
+            <option value="moderate">Moderate</option>
+            <option value="heavy">Heavy</option>
+            <option value="very_heavy">Very heavy</option>
+          </select>
+        </label>
+        <label>Occupational heat exposure
+          <select name="occupationalHeatExposure">
+            <option value="low" selected>Low</option><option value="moderate">Moderate</option><option value="high">High</option>
+          </select>
+        </label>
+        <label>Heat acclimatization
+          <select name="heatAcclimatization">
+            <option value="low">Low</option><option value="moderate" selected>Moderate</option><option value="high">High</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Protection</legend>
+        <label>Cooling access <select name="coolingAccess"><option value="yes" selected>Yes</option><option value="partial">Partial</option><option value="no">No</option></select></label>
+        <label>Hydration access <select name="hydrationAccess"><option value="yes" selected>Yes</option><option value="partial">Partial</option><option value="no">No</option></select></label>
+        <label>Protective clothing <select name="protectiveClothing"><option value="yes">Yes</option><option value="partial" selected>Partial</option><option value="no">No</option></select></label>
+        <label>Shade access <select name="shadeAccess"><option value="yes" selected>Yes</option><option value="partial">Partial</option><option value="no">No</option></select></label>
+        <label>Break frequency <select name="breakFrequency"><option value="frequent" selected>Frequent</option><option value="occasional">Occasional</option><option value="rare">Rare</option></select></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Location</legend>
+        <p class="field-help">Use your device GPS, search a place, or type coordinates.</p>
+        <div class="loc-row">
+          <button type="button" class="btn" id="use-gps">Use my GPS</button>
+          <input id="loc-search" placeholder="Search a place (e.g. Aligarh)">
+          <button type="button" class="btn" id="loc-search-btn">Search</button>
+        </div>
+        <ul id="loc-results" class="loc-results"></ul>
+        <div class="loc-row">
+          <label>Latitude <input type="number" name="latitude" step="any" required></label>
+          <label>Longitude <input type="number" name="longitude" step="any" required></label>
+        </div>
+        <label>City <input name="city"></label>
+        <label>State <input name="state"></label>
+      </fieldset>
+
+      <p class="form-error" id="signup-error" role="alert" hidden></p>
+      <button class="btn btn-primary btn-wide" type="submit">Create account</button>
+    </form>
+  </div>
+</main>
+<script>
+const form = document.getElementById('signup-form');
+const errEl = document.getElementById('signup-error');
+
+document.getElementById('use-gps').addEventListener('click', () => {
+  if (!navigator.geolocation) { errEl.textContent = 'Geolocation is not available in this browser.'; errEl.hidden = false; return; }
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      form.latitude.value = pos.coords.latitude.toFixed(4);
+      form.longitude.value = pos.coords.longitude.toFixed(4);
+    },
+    () => { errEl.textContent = 'Could not read GPS. Search a place or enter coordinates instead.'; errEl.hidden = false; }
+  );
+});
+
+document.getElementById('loc-search-btn').addEventListener('click', async () => {
+  const q = document.getElementById('loc-search').value;
+  const list = document.getElementById('loc-results');
+  list.innerHTML = '<li>Searching…</li>';
+  const res = await fetch('/api/location/search?q=' + encodeURIComponent(q));
+  const body = await res.json();
+  list.innerHTML = '';
+  if (!res.ok) { list.innerHTML = '<li>' + (body.error || 'Search failed.') + '</li>'; return; }
+  if (!body.results.length) { list.innerHTML = '<li>No places found.</li>'; return; }
+  body.results.forEach((r) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = r.displayName;
+    btn.addEventListener('click', () => {
+      form.latitude.value = r.latitude.toFixed(4);
+      form.longitude.value = r.longitude.toFixed(4);
+      list.innerHTML = '';
+    });
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  errEl.hidden = true;
+  const data = Object.fromEntries(new FormData(form).entries());
+  const res = await fetch('/api/auth/signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  const body = await res.json();
+  if (res.ok) window.location.href = body.redirect;
+  else { errEl.textContent = body.error || 'Signup failed.'; errEl.hidden = false; }
+});
+</script>
+<%- include('partials/footer') %>

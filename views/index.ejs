@@ -1,0 +1,33 @@
+<%- include('partials/header', { title: null, bodyClass: 'landing' }) %>
+<%- include('partials/navbar') %>
+<main class="landing-main">
+  <section class="hero">
+    <p class="hero-kicker">Personalized human thermal-stress monitoring</p>
+    <h1>The heat is the same for everyone.<br>The risk is not.</h1>
+    <p class="hero-lede">
+      HeatWatch computes the scientific thermal stress of your environment — the UTCI — from live
+      temperature, humidity, wind and solar radiation. Then it personalizes that number into an HTSI
+      using the exposure and vulnerability profile you report.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/signup">Create your profile</a>
+      <a class="btn" href="/login">Citizen login</a>
+      <a class="btn" href="/login">Government login</a>
+      <a class="btn" href="/login">Admin login</a>
+    </div>
+  </section>
+  <section class="flow-strip" aria-label="How HeatWatch works">
+    <ol class="flow">
+      <li><strong>Weather</strong><span>temperature · humidity · wind · radiation</span></li>
+      <li><strong>UTCI</strong><span>vapour pressure + Tmrt → scientific thermal stress</span></li>
+      <li><strong>HTSI</strong><span>+ your exposure &amp; vulnerability profile</span></li>
+      <li><strong>Risk</strong><span>five-level personalized assessment</span></li>
+      <li><strong>Alerts &amp; GIS</strong><span>citizen advisories · regional hotspot map</span></li>
+    </ol>
+  </section>
+  <section class="landing-note">
+    <p>Same environment → same UTCI. Different people → potentially different HTSI. That separation is
+       the core of HeatWatch: the environment is measured once, the risk is estimated per person.</p>
+  </section>
+</main>
+<%- include('partials/footer') %>

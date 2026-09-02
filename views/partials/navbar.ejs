@@ -1,0 +1,22 @@
+<nav class="topbar">
+  <a class="brand" href="/">Heat<span>Watch</span></a>
+  <div class="topbar-links">
+    <% if (user) { %>
+      <% if (user.role === 'citizen' || user.role === 'admin') { %><a href="/dashboard">My risk</a><% } %>
+      <% if (user.role === 'government' || user.role === 'admin') { %><a href="/government">Regional map</a><% } %>
+      <% if (user.role === 'admin') { %><a href="/admin">System</a><% } %>
+      <span class="topbar-user"><%= user.name %> · <%= user.role %></span>
+      <button id="logout-btn" class="btn btn-quiet" type="button">Log out</button>
+    <% } else { %>
+      <a href="/login">Log in</a>
+      <a class="btn btn-primary" href="/signup">Create account</a>
+    <% } %>
+  </div>
+</nav>
+<script>
+  const lb = document.getElementById('logout-btn');
+  if (lb) lb.addEventListener('click', async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    window.location.href = '/';
+  });
+</script>

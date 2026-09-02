@@ -1,0 +1,24 @@
+<section class="panel panel-risk" id="risk-panel" aria-live="polite">
+  <h2>Your personalized risk</h2>
+  <div class="risk-readout">
+    <div class="risk-score">
+      <span class="risk-number" id="r-htsi">—</span>
+      <span class="risk-unit">HTSI</span>
+    </div>
+    <div class="risk-level-wrap">
+      <span class="risk-level" id="r-level">awaiting data</span>
+      <span class="risk-method" id="r-method"></span>
+    </div>
+  </div>
+  <div class="scale-strip" aria-hidden="true">
+    <div class="scale-track"><div class="scale-marker" id="r-marker"></div></div>
+    <div class="scale-labels"><span>Low</span><span>Moderate</span><span>High</span><span>Very high</span><span>Extreme</span></div>
+  </div>
+  <details class="risk-why" id="r-why-wrap">
+    <summary>Why this level?</summary>
+    <p class="explain">UTCI represents the thermal environment — it is identical for everyone at your location.
+       HTSI additionally considers your reported exposure and vulnerability profile.</p>
+    <ul id="r-factors" class="factor-list"></ul>
+    <p class="disclaimer">Estimated personalized heat risk from a prototype assessment — not a medical diagnosis.</p>
+  </details>
+</section>

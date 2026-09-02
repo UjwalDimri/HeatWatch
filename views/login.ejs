@@ -1,0 +1,32 @@
+<%- include('partials/header', { title: 'Log in', bodyClass: 'auth', extraCss: ['/css/auth.css'] }) %>
+<%- include('partials/navbar') %>
+<main class="auth-main">
+  <div class="auth-box">
+    <h1>Log in</h1>
+    <p class="auth-sub">One login for citizens, government users and administrators — your role decides your dashboard.</p>
+    <form id="login-form" novalidate>
+      <label>Email <input type="email" name="email" required autocomplete="email"></label>
+      <label>Password <input type="password" name="password" required autocomplete="current-password"></label>
+      <p class="form-error" id="login-error" role="alert" hidden></p>
+      <button class="btn btn-primary btn-wide" type="submit">Log in</button>
+    </form>
+    <p class="auth-alt">New here? <a href="/signup">Create a citizen account</a>.</p>
+  </div>
+</main>
+<script>
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = e.target;
+  const errEl = document.getElementById('login-error');
+  errEl.hidden = true;
+  const res = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: f.email.value, password: f.password.value }),
+  });
+  const body = await res.json();
+  if (res.ok) { window.location.href = body.redirect; }
+  else { errEl.textContent = body.error || 'Login failed.'; errEl.hidden = false; }
+});
+</script>
+<%- include('partials/footer') %>

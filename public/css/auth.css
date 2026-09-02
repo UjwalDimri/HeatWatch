@@ -1,0 +1,17 @@
+.auth-main { display: flex; justify-content: center; padding: 2.5rem 1rem; }
+.auth-box { background: var(--panel); border: 1px solid var(--rule); border-top: 3px solid var(--shade);
+  border-radius: var(--radius); padding: 1.6rem 1.8rem; width: 100%; max-width: 26rem; }
+.auth-box-wide { max-width: 46rem; }
+.auth-sub { color: var(--ink-soft); font-size: 0.92rem; }
+.auth-box form label { display: block; margin: 0.7rem 0; font-weight: 600; }
+.auth-box form input, .auth-box form select {
+  display: block; width: 100%; margin-top: 0.25rem; padding: 0.5rem 0.6rem;
+  border: 1px solid var(--rule); border-radius: var(--radius); font: inherit; background: #fff;
+}
+.auth-box fieldset { border: none; border-top: 1px solid var(--rule); margin: 1.2rem 0 0; padding: 0.6rem 0 0; }
+.auth-box legend { font-weight: 800; padding-right: 0.6rem; }
+.field-help { color: var(--ink-soft); font-size: 0.85rem; margin: 0.3rem 0; }
+.loc-row { display: flex; gap: 0.6rem; align-items: end; flex-wrap: wrap; }
+.loc-row label { flex: 1; }
+.loc-row input#loc-search { flex: 2; margin-top: 0; padding: 0.5rem 0.6rem; border: 1px solid var(--rule); border-radius: var(--radius); font: inherit; }
+.auth-alt { margin-top: 1rem; font-size: 0.92rem; }

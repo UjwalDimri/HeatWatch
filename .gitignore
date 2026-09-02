@@ -1,0 +1,4 @@
+node_modules/
+.env
+data/processed/*.csv
+model_store/htsi_model.json

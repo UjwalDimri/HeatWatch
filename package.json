@@ -1,0 +1,29 @@
+{
+  "name": "heatwatch",
+  "version": "1.0.0",
+  "description": "HeatWatch — personalized human thermal-stress monitoring (SIH prototype). UTCI = environmental thermal stress; HTSI = personalized heat risk.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "seed:users": "node scripts/seedUsers.js",
+    "generate:synthetic": "node scripts/generateSyntheticProfiles.js",
+    "build:training": "node scripts/buildTrainingData.js",
+    "train:model": "node scripts/trainModel.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "ml-random-forest": "^2.1.0",
+    "mongoose": "^8.24.4"
+  },
+  "license": "MIT"
+}

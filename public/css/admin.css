@@ -1,0 +1,12 @@
+.admin-main { max-width: 72rem; margin: 0 auto; padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
+.admin-main h1 { margin: 0; font-size: 1.6rem; }
+.h-note { font-weight: 400; color: var(--ink-soft); font-size: 0.85rem; }
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.8rem; margin: 0.6rem 0 0; }
+.stat-row > div { border-left: 3px solid var(--shade); padding-left: 0.7rem; }
+.stat-row dt { color: var(--ink-soft); font-size: 0.85rem; }
+.stat-row dd { margin: 0; font-size: 1.5rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 0.5rem; }
+.admin-table th { text-align: left; border-bottom: 2px solid var(--ink); padding: 0.35rem 0.5rem; }
+.admin-table td { border-bottom: 1px solid var(--rule); padding: 0.35rem 0.5rem; vertical-align: top; }
+.admin-table td.lvl-error { color: var(--risk-vhigh); font-weight: 600; }
+.admin-table td.lvl-warn { color: var(--risk-high); font-weight: 600; }
