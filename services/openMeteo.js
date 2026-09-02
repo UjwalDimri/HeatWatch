@@ -34,6 +34,18 @@ const HOURLY_VARS = [
 
 let lastStatus = { state: 'unknown', checkedAt: null, detail: null };
 
+/* Short-lived cache: repeated assessments at (almost) the same place within
+ * CACHE_TTL_MS reuse the last successful response instead of re-calling the
+ * API. This protects demos from Open-Meteo HTTP 429 rate limits (shared
+ * hosting IPs). Cached responses are real, recent measurements — the record
+ * keeps its original retrievedAt, so freshness stays visible and honest. */
+const CACHE_TTL_MS = 10 * 60 * 1000;
+const cache = new Map(); // key -> { at, value }
+
+function cacheKey(lat, lon) {
+  return `${Number(lat).toFixed(2)},${Number(lon).toFixed(2)}`; // ~1 km buckets
+}
+
 function getStatus() {
   return { ...lastStatus };
 }
@@ -44,6 +56,10 @@ function getStatus() {
  * for charts.
  */
 async function fetchLive(latitude, longitude) {
+  const key = cacheKey(latitude, longitude);
+  const hit = cache.get(key);
+  if (hit && Date.now() - hit.at < CACHE_TTL_MS) return hit.value;
+
   const url =
     `${BASE}?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}` +
     `&hourly=${HOURLY_VARS.join(',')}` +
@@ -65,7 +81,18 @@ async function fetchLive(latitude, longitude) {
     throw e;
   }
 
-  const body = await res.json();
+  // Rate limiters occasionally answer 200 with plain text instead of JSON —
+  // read as text first so a non-JSON reply produces a clear, honest error.
+  const raw = await res.text();
+  let body;
+  try {
+    body = JSON.parse(raw);
+  } catch (parseErr) {
+    lastStatus = { state: 'error', checkedAt: new Date().toISOString(), detail: 'non-JSON reply (likely rate limiting)' };
+    const e = new Error('Open-Meteo sent a non-JSON reply — usually temporary rate limiting; try again in a few minutes.');
+    e.code = 'SOURCE_ERROR';
+    throw e;
+  }
   const h = body.hourly;
   if (!h || !Array.isArray(h.time) || h.time.length === 0) {
     lastStatus = { state: 'error', checkedAt: new Date().toISOString(), detail: 'empty hourly payload' };
@@ -122,7 +149,9 @@ async function fetchLive(latitude, longitude) {
     });
   }
 
-  return { record, series };
+  const value = { record, series };
+  cache.set(key, { at: Date.now(), value });
+  return value;
 }
 
 /** Lightweight connectivity probe for the admin API-status panel. */

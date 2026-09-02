@@ -24,10 +24,13 @@ function clearAuthCookie(res) {
   res.clearCookie(COOKIE_NAME);
 }
 
-/** Attach req.user if a valid token cookie is present; never throws. */
+/** Attach req.user if a valid token is present (cookie for the web app,
+ *  Authorization: Bearer for the mobile app); never throws. */
 async function attachUser(req, res, next) {
   try {
-    const token = req.cookies?.[COOKIE_NAME];
+    let token = req.cookies?.[COOKIE_NAME];
+    const header = req.get('authorization');
+    if (!token && header && header.startsWith('Bearer ')) token = header.slice(7);
     if (!token) return next();
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(payload.sub).lean();

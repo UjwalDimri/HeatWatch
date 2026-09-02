@@ -65,7 +65,8 @@ router.post('/signup', async (req, res, next) => {
     await logEvent('info', 'auth', `New signup: ${email}`);
     const token = signToken(user);
     setAuthCookie(res, token);
-    return res.status(201).json({ ok: true, redirect: '/dashboard' });
+    // token is included for native clients (the web app uses the httpOnly cookie)
+    return res.status(201).json({ ok: true, redirect: '/dashboard', token, role: user.role, name: user.name });
   } catch (err) {
     return next(err);
   }
@@ -84,9 +85,10 @@ router.post('/login', async (req, res, next) => {
     user.lastLogin = new Date();
     await user.save();
     await logEvent('info', 'auth', `Login: ${email}`);
-    setAuthCookie(res, signToken(user));
+    const token = signToken(user);
+    setAuthCookie(res, token);
     const redirect = user.role === 'admin' ? '/admin' : user.role === 'government' ? '/government' : '/dashboard';
-    return res.json({ ok: true, redirect });
+    return res.json({ ok: true, redirect, token, role: user.role, name: user.name });
   } catch (err) {
     return next(err);
   }
