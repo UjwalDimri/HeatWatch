@@ -97,8 +97,8 @@ heatwatch/
 ## 5. Setup
 
 ### Prerequisites
-- Node.js ≥ 18 (developed on 22)
-- MongoDB running locally (or a connection string)
+-- Node.js ≥ 18 (developed on 22)
+-- MongoDB running locally (or a connection string)
 
 ### Install & configure
 ```bash
