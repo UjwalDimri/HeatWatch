@@ -1,15 +1,41 @@
 <nav class="topbar">
-  <a class="brand" href="/">Heat<span>Watch</span></a>
+  <a class="brand" href="/">
+    <div class="brand-icon">
+      <i data-lucide="flame" style="width:16px;height:16px;color:#041226;"></i>
+    </div>
+    Heat<span>Watch</span>
+  </a>
   <div class="topbar-links">
     <% if (user) { %>
-      <% if (user.role === 'citizen' || user.role === 'admin') { %><a href="/dashboard">My risk</a><% } %>
-      <% if (user.role === 'government' || user.role === 'admin') { %><a href="/government">Regional map</a><% } %>
-      <% if (user.role === 'admin') { %><a href="/admin">System</a><% } %>
-      <span class="topbar-user"><%= user.name %> · <%= user.role %></span>
-      <button id="logout-btn" class="btn btn-quiet" type="button">Log out</button>
+      <% if (user.role === 'citizen' || user.role === 'admin') { %>
+        <a href="/dashboard">
+          <i data-lucide="activity" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i>My Risk
+        </a>
+      <% } %>
+      <% if (user.role === 'government' || user.role === 'admin') { %>
+        <a href="/government">
+          <i data-lucide="map-pin" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i>Regional Map
+        </a>
+      <% } %>
+      <% if (user.role === 'admin') { %>
+        <a href="/admin">
+          <i data-lucide="cpu" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i>System
+        </a>
+      <% } %>
+      <span class="topbar-user">
+        <i data-lucide="user" style="width:12px;height:12px;margin-right:2px;"></i>
+        <%= user.name %> · <%= user.role %>
+      </span>
+      <button id="logout-btn" class="btn btn-quiet" type="button">
+        <i data-lucide="log-out" style="width:14px;height:14px;"></i>Log out
+      </button>
     <% } else { %>
-      <a href="/login">Log in</a>
-      <a class="btn btn-primary" href="/signup">Create account</a>
+      <a href="/login">
+        <i data-lucide="lock" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i>Log in
+      </a>
+      <a class="btn btn-primary" href="/signup">
+        <i data-lucide="user-plus" style="width:14px;height:14px;"></i>Create account
+      </a>
     <% } %>
   </div>
 </nav>
@@ -19,4 +45,7 @@
     await fetch('/api/auth/logout', { method: 'POST' });
     window.location.href = '/';
   });
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 </script>

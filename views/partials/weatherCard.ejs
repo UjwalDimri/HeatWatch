@@ -1,23 +1,57 @@
-<section class="panel" id="weather-panel" aria-live="polite">
-  <h2>Current conditions</h2>
+<section class="panel card-3d" id="weather-panel" aria-live="polite">
+  <h2>
+    <i data-lucide="cloud-sun" style="width:18px;height:18px;color:var(--shade);"></i>
+    Current Conditions
+  </h2>
+  
   <dl class="ledger">
-    <div><dt>Air temperature</dt><dd id="w-temp">—</dd></div>
-    <div><dt>Relative humidity</dt><dd id="w-rh">—</dd></div>
-    <div><dt>Wind (10 m)</dt><dd id="w-wind">—</dd></div>
-    <div><dt>Solar radiation</dt><dd id="w-rad">—</dd></div>
+    <div>
+      <dt><i data-lucide="thermometer" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--ink-soft);"></i>Air temperature</dt>
+      <dd id="w-temp">—</dd>
+    </div>
+    <div>
+      <dt><i data-lucide="droplets" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--ink-soft);"></i>Relative humidity</dt>
+      <dd id="w-rh">—</dd>
+    </div>
+    <div>
+      <dt><i data-lucide="wind" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--ink-soft);"></i>Wind speed (10 m)</dt>
+      <dd id="w-wind">—</dd>
+    </div>
+    <div>
+      <dt><i data-lucide="sun" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--ink-soft);"></i>Solar radiation</dt>
+      <dd id="w-rad">—</dd>
+    </div>
   </dl>
-  <h2>Thermal environment</h2>
+
+  <h2>
+    <i data-lucide="gauge" style="width:18px;height:18px;color:#38bdf8;"></i>
+    Thermal Environment
+  </h2>
+  
   <dl class="ledger">
-    <div><dt>Vapour pressure</dt><dd id="w-vp">—</dd></div>
-    <div><dt>Mean radiant temperature (Tmrt)</dt><dd id="w-tmrt">—</dd></div>
-    <div><dt>UTCI</dt><dd id="w-utci">—</dd></div>
-    <div><dt>UTCI stress category</dt><dd id="w-utci-cat">—</dd></div>
+    <div>
+      <dt><i data-lucide="waves" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--ink-soft);"></i>Vapour pressure</dt>
+      <dd id="w-vp">—</dd>
+    </div>
+    <div>
+      <dt><i data-lucide="flame" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--ink-soft);"></i>Mean radiant temp (Tmrt)</dt>
+      <dd id="w-tmrt">—</dd>
+    </div>
+    <div>
+      <dt><i data-lucide="cpu" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--ink-soft);"></i>Universal Thermal Climate (UTCI)</dt>
+      <dd id="w-utci">—</dd>
+    </div>
+    <div>
+      <dt><i data-lucide="activity" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;color:var(--ink-soft);"></i>UTCI thermal stress level</dt>
+      <dd id="w-utci-cat">—</dd>
+    </div>
   </dl>
+
   <p class="data-meta">
-    Source <strong id="w-source">—</strong> · updated <span id="w-updated">—</span> ·
-    data <span id="w-status" class="status-chip">—</span> ·
-    Tmrt <span id="w-tmrt-status" class="status-chip">—</span> ·
-    UTCI <span id="w-utci-status" class="status-chip">—</span>
+    Source: <strong id="w-source">—</strong> · Updated: <span id="w-updated">—</span><br>
+    Telemetry: <span id="w-status" class="status-chip">—</span> ·
+    Tmrt: <span id="w-tmrt-status" class="status-chip">—</span> ·
+    UTCI: <span id="w-utci-status" class="status-chip">—</span>
   </p>
   <p class="data-note" id="w-notes" hidden></p>
 </section>

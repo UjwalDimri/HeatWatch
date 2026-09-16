@@ -1,32 +1,73 @@
-<%- include('partials/header', { title: 'Log in', bodyClass: 'auth', extraCss: ['/css/auth.css'] }) %>
+<%- include('partials/header', { title: 'Observatory Portal Access', bodyClass: 'auth', extraCss: ['/css/auth.css'] }) %>
 <%- include('partials/navbar') %>
+
 <main class="auth-main">
-  <div class="auth-box">
-    <h1>Log in</h1>
-    <p class="auth-sub">One login for citizens, government users and administrators — your role decides your dashboard.</p>
+  <div class="auth-box card-3d">
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.6rem;">
+      <div class="brand-icon" style="width:34px;height:34px;">
+        <i data-lucide="lock" style="width:18px;height:18px;color:#041226;"></i>
+      </div>
+      <h1 style="margin:0;">Portal Access</h1>
+    </div>
+    
+    <p class="auth-sub">
+      Unified credential gateway for citizens, municipal officials, and system operators.
+    </p>
+
     <form id="login-form" novalidate>
-      <label>Email <input type="email" name="email" required autocomplete="email"></label>
-      <label>Password <input type="password" name="password" required autocomplete="current-password"></label>
-      <p class="form-error" id="login-error" role="alert" hidden></p>
-      <button class="btn btn-primary btn-wide" type="submit">Log in</button>
+      <label>
+        <span><i data-lucide="mail" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Email Address</span>
+        <input type="email" name="email" required autocomplete="email" placeholder="name@domain.com">
+      </label>
+
+      <label>
+        <span><i data-lucide="key" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Access Password</span>
+        <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+      </label>
+
+      <p class="form-error banner" id="login-error" role="alert" hidden></p>
+
+      <button class="btn btn-primary btn-wide" type="submit" style="margin-top:1.2rem;">
+        <i data-lucide="log-in" style="width:16px;height:16px;"></i>Authenticate &amp; Enter
+      </button>
     </form>
-    <p class="auth-alt">New here? <a href="/signup">Create a citizen account</a>.</p>
+
+    <p class="auth-alt">
+      New citizen? <a href="/signup">Create your thermal profile</a>.
+    </p>
   </div>
 </main>
+
 <script>
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const f = e.target;
   const errEl = document.getElementById('login-error');
   errEl.hidden = true;
-  const res = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: f.email.value, password: f.password.value }),
-  });
-  const body = await res.json();
-  if (res.ok) { window.location.href = body.redirect; }
-  else { errEl.textContent = body.error || 'Login failed.'; errEl.hidden = false; }
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: f.email.value, password: f.password.value }),
+    });
+    const body = await res.json();
+    if (res.ok) {
+      window.location.href = body.redirect;
+    } else {
+      errEl.textContent = body.error || 'Authentication failed.';
+      errEl.hidden = false;
+    }
+  } catch (err) {
+    errEl.textContent = 'Server unreachable. Please try again.';
+    errEl.hidden = false;
+  }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.HW_3DCARD && window.HW_3DCARD.init) {
+    window.HW_3DCARD.init();
+  }
 });
 </script>
+
 <%- include('partials/footer') %>

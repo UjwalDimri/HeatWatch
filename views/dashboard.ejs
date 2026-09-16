@@ -1,21 +1,34 @@
-<%- include('partials/header', { title: 'My risk', bodyClass: 'dashboard', extraCss: ['/css/dashboard.css'] }) %>
+<%- include('partials/header', { title: 'My Risk Cockpit', bodyClass: 'dashboard', extraCss: ['/css/dashboard.css'] }) %>
 <%- include('partials/navbar') %>
+
 <main class="dash-main">
   <header class="dash-head">
-    <div>
+    <div class="dash-title-group">
       <h1>Hello, <%= user.name %></h1>
-      <p class="dash-sub" id="location-line">Location: <span id="loc-label">not set</span></p>
-      <p class="dash-sub profile-line">
-        Profile: <%= profile ? [profile.occupation || 'occupation not set', (profile.exposureCategory || '?') + ' exposure', (profile.activityLevel || '?') + ' activity'].join(' · ') : 'no profile on record' %>
+      <p class="dash-sub" id="location-line">
+        <i data-lucide="map-pin" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;color:var(--shade);"></i>
+        Monitored Coordinates: <span id="loc-label">not set</span>
       </p>
+      <div class="dash-sub profile-line">
+        <i data-lucide="user-check" style="width:13px;height:13px;color:var(--risk-low);"></i>
+        <span><%= profile ? [profile.occupation || 'Occupation unassigned', (profile.exposureCategory || '?') + ' exposure', (profile.activityLevel || '?') + ' activity'].join(' · ') : 'No profile on record' %></span>
+      </div>
     </div>
+
     <div class="dash-controls">
-      <button class="btn" id="use-gps">Use my GPS</button>
-      <input id="loc-search" placeholder="Search a place">
-      <button class="btn" id="loc-search-btn">Search</button>
-      <button class="btn btn-primary" id="refresh-btn">Refresh assessment</button>
+      <button class="btn" id="use-gps" type="button">
+        <i data-lucide="crosshair" style="width:15px;height:15px;"></i>Use GPS
+      </button>
+      <input id="loc-search" placeholder="Search city or coordinates (e.g. Aligarh, Delhi)">
+      <button class="btn" id="loc-search-btn" type="button">
+        <i data-lucide="search" style="width:15px;height:15px;"></i>Search
+      </button>
+      <button class="btn btn-primary" id="refresh-btn" type="button">
+        <i data-lucide="refresh-cw" style="width:15px;height:15px;"></i>Refresh
+      </button>
     </div>
-    <ul id="loc-results" class="loc-results"></ul>
+
+    <ul id="loc-results" class="loc-results" style="width: 100%; margin-top: 0.8rem;"></ul>
   </header>
 
   <p class="banner banner-error" id="dash-error" role="alert" hidden></p>
@@ -24,16 +37,28 @@
     <%- include('partials/weatherCard') %>
     <%- include('partials/riskCard') %>
     <%- include('partials/alertCard') %>
-    <section class="panel panel-charts">
-      <h2>Recent history</h2>
-      <div class="chart-block"><canvas id="chart-temp" height="140"></canvas></div>
-      <div class="chart-block"><canvas id="chart-utci" height="140"></canvas></div>
-      <div class="chart-block"><canvas id="chart-htsi" height="140"></canvas></div>
-      <p class="data-note">Temperature and UTCI history come from the live source series and your stored
-         assessments; HTSI history is your own stored assessments. Nothing is back-filled or invented.</p>
+    
+    <section class="panel panel-charts card-3d">
+      <h2>
+        <i data-lucide="trending-up" style="width:18px;height:18px;color:#38bdf8;"></i>
+        Historical Telemetry Trends
+      </h2>
+      <div class="chart-block">
+        <canvas id="chart-temp" height="140"></canvas>
+      </div>
+      <div class="chart-block">
+        <canvas id="chart-utci" height="140"></canvas>
+      </div>
+      <div class="chart-block">
+        <canvas id="chart-htsi" height="140"></canvas>
+      </div>
+      <p class="data-note">
+        Temperature and UTCI traces are drawn from physical observations and reanalysis; HTSI trace records your historical biometeorological risk evaluations.
+      </p>
     </section>
   </div>
 </main>
+
 <script>
   window.HEATWATCH_PROFILE_LOCATION = <%- JSON.stringify(profile && profile.latitude != null && profile.longitude != null ? { latitude: profile.latitude, longitude: profile.longitude, city: profile.city || '' } : null) %>;
   window.HEATWATCH_RISK_COLORS = <%- JSON.stringify(riskColors) %>;
@@ -41,4 +66,12 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script src="/js/charts.js"></script>
 <script src="/js/dashboard.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.HW_3DCARD && window.HW_3DCARD.init) {
+      window.HW_3DCARD.init();
+    }
+  });
+</script>
+
 <%- include('partials/footer') %>

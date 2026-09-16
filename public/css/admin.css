@@ -1,12 +1,111 @@
-.admin-main { max-width: 72rem; margin: 0 auto; padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
-.admin-main h1 { margin: 0; font-size: 1.6rem; }
-.h-note { font-weight: 400; color: var(--ink-soft); font-size: 0.85rem; }
-.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.8rem; margin: 0.6rem 0 0; }
-.stat-row > div { border-left: 3px solid var(--shade); padding-left: 0.7rem; }
-.stat-row dt { color: var(--ink-soft); font-size: 0.85rem; }
-.stat-row dd { margin: 0; font-size: 1.5rem; font-weight: 800; font-variant-numeric: tabular-nums; }
-.admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 0.5rem; }
-.admin-table th { text-align: left; border-bottom: 2px solid var(--ink); padding: 0.35rem 0.5rem; }
-.admin-table td { border-bottom: 1px solid var(--rule); padding: 0.35rem 0.5rem; vertical-align: top; }
-.admin-table td.lvl-error { color: var(--risk-vhigh); font-weight: 600; }
-.admin-table td.lvl-warn { color: var(--risk-high); font-weight: 600; }
+/* HeatWatch — Cyber System Telemetry Administration */
+
+.admin-main {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-main h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.h-note {
+  font-weight: 400;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1rem;
+  margin: 0.8rem 0 0;
+}
+
+.stat-row > div {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--shade);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: all 0.2s ease;
+}
+
+.stat-row > div:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 242, 254, 0.4);
+  transform: translateY(-2px);
+}
+
+.stat-row dt {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.stat-row dd {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  font-family: var(--font-mono);
+}
+
+/* Cyber Telemetry Tables */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin-top: 0.8rem;
+}
+
+.admin-table th {
+  text-align: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--shade);
+  border-bottom: 2px solid var(--panel-border);
+  padding: 0.6rem 0.8rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-table td {
+  border-bottom: 1px solid var(--rule);
+  padding: 0.6rem 0.8rem;
+  vertical-align: middle;
+  color: var(--ink-soft);
+  transition: background 0.15s ease;
+}
+
+.admin-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+
+.admin-table td.lvl-error {
+  color: var(--risk-vhigh);
+  font-weight: 700;
+}
+
+.admin-table td.lvl-warn {
+  color: var(--risk-high);
+  font-weight: 700;
+}
+
+.admin-table td.lvl-info {
+  color: var(--shade);
+}

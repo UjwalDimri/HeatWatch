@@ -1,33 +1,109 @@
-<%- include('partials/header', { title: null, bodyClass: 'landing' }) %>
+<%- include('partials/header', { title: '3D Thermal Stress Observatory', bodyClass: 'landing' }) %>
 <%- include('partials/navbar') %>
+
 <main class="landing-main">
-  <section class="hero">
-    <p class="hero-kicker">Personalized human thermal-stress monitoring</p>
-    <h1>The heat is the same for everyone.<br>The risk is not.</h1>
-    <p class="hero-lede">
-      HeatWatch computes the scientific thermal stress of your environment — the UTCI — from live
-      temperature, humidity, wind and solar radiation. Then it personalizes that number into an HTSI
-      using the exposure and vulnerability profile you report.
-    </p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="/signup">Create your profile</a>
-      <a class="btn" href="/login">Citizen login</a>
-      <a class="btn" href="/login">Government login</a>
-      <a class="btn" href="/login">Admin login</a>
+  <!-- Hero Section with 3D Globe -->
+  <section class="hero-3d-layout">
+    <div class="hero-content">
+      <div class="hero-kicker">
+        <i data-lucide="shield-alert" style="width:14px;height:14px;"></i>
+        Personalized Human Thermal-Stress Monitoring
+      </div>
+      <h1>
+        The heat is the same for everyone.<br>
+        <span class="gradient-text">The risk is not.</span>
+      </h1>
+      <p class="hero-lede">
+        HeatWatch models real-time biometric climate vulnerability. By computing environmental UTCI 
+        from raw physical radiation, vapour pressure, and wind — then fusing it with your exposure profile into 
+        a personalized <strong>HTSI</strong> score.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/signup">
+          <i data-lucide="sparkles" style="width:16px;height:16px;"></i>Create your profile
+        </a>
+        <a class="btn" href="/login">
+          <i data-lucide="user" style="width:16px;height:16px;"></i>Citizen portal
+        </a>
+        <a class="btn" href="/government">
+          <i data-lucide="map" style="width:16px;height:16px;"></i>Government GIS
+        </a>
+      </div>
+    </div>
+
+    <!-- 3D Interactive Globe Canvas Container -->
+    <div class="globe-wrapper">
+      <div id="hero-globe-container"></div>
+      <div class="globe-badge">
+        <i data-lucide="orbit" style="width:14px;height:14px;"></i>
+        <span>Drag to rotate 3D thermal globe</span>
+      </div>
     </div>
   </section>
-  <section class="flow-strip" aria-label="How HeatWatch works">
-    <ol class="flow">
-      <li><strong>Weather</strong><span>temperature · humidity · wind · radiation</span></li>
-      <li><strong>UTCI</strong><span>vapour pressure + Tmrt → scientific thermal stress</span></li>
-      <li><strong>HTSI</strong><span>+ your exposure &amp; vulnerability profile</span></li>
-      <li><strong>Risk</strong><span>five-level personalized assessment</span></li>
-      <li><strong>Alerts &amp; GIS</strong><span>citizen advisories · regional hotspot map</span></li>
-    </ol>
-  </section>
-  <section class="landing-note">
-    <p>Same environment → same UTCI. Different people → potentially different HTSI. That separation is
-       the core of HeatWatch: the environment is measured once, the risk is estimated per person.</p>
+
+  <!-- 3D Pipeline & Architecture Flow -->
+  <section class="pipeline-section" aria-label="How HeatWatch works">
+    <div class="section-head">
+      <h2>Scientific Telemetry Pipeline</h2>
+      <p class="dash-sub">From physical atmospheric variables to personalized biometeorological risk</p>
+    </div>
+
+    <div class="pipeline-grid">
+      <div class="flow-card card-3d">
+        <span class="flow-step-num">01</span>
+        <div class="flow-card-icon"><i data-lucide="cloud-sun" style="width:22px;height:22px;"></i></div>
+        <strong>Atmosphere</strong>
+        <p>Live solar irradiance, 10m wind speed, dry-bulb temperature, and relative humidity.</p>
+      </div>
+
+      <div class="flow-card card-3d">
+        <span class="flow-step-num">02</span>
+        <div class="flow-card-icon"><i data-lucide="thermometer" style="width:22px;height:22px;"></i></div>
+        <strong>UTCI Index</strong>
+        <p>Mean Radiant Temperature (Tmrt) and vapour pressure fused into universal thermal climate stress.</p>
+      </div>
+
+      <div class="flow-card card-3d">
+        <div class="flow-card-icon"><i data-lucide="user-check" style="width:22px;height:22px;"></i></div>
+        <span class="flow-step-num">03</span>
+        <strong>Vulnerability</strong>
+        <p>Your work exertion, outdoor exposure hours, age, hydration, and preexisting health conditions.</p>
+      </div>
+
+      <div class="flow-card card-3d">
+        <span class="flow-step-num">04</span>
+        <div class="flow-card-icon"><i data-lucide="gauge" style="width:22px;height:22px;"></i></div>
+        <strong>HTSI Score</strong>
+        <p>Monotone human thermal stress index mapped to 5 transparent, actionable risk tiers.</p>
+      </div>
+
+      <div class="flow-card card-3d">
+        <span class="flow-step-num">05</span>
+        <div class="flow-card-icon"><i data-lucide="bell-ring" style="width:22px;height:22px;"></i></div>
+        <strong>Alerts &amp; GIS</strong>
+        <p>Proactive heat-stress advisories for citizens and tactical regional hotspot surveillance for officials.</p>
+      </div>
+    </div>
+
+    <div class="landing-highlight-box">
+      <i data-lucide="info" style="width:28px;height:28px;color:var(--shade);flex-shrink:0;"></i>
+      <p>
+        <strong>The HeatWatch Principle:</strong> Same environment &rarr; identical UTCI. Different individuals &rarr; potentially distinct HTSI. 
+        Environmental stress is measured once from physical telemetry; biological risk is estimated per individual profile.
+      </p>
+    </div>
   </section>
 </main>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.HW_3D && window.HW_3D.initHeroGlobe) {
+      window.HW_3D.initHeroGlobe('hero-globe-container');
+    }
+    if (window.HW_3DCARD && window.HW_3DCARD.init) {
+      window.HW_3DCARD.init();
+    }
+  });
+</script>
+
 <%- include('partials/footer') %>

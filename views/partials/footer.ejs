@@ -1,9 +1,20 @@
 <footer class="site-footer">
-  <p>HeatWatch is a Smart India Hackathon prototype for estimated personalized heat risk. It is not a medical
-     device and does not provide diagnosis. Vulnerability profiles used for model development are synthetic and
-     not medically validated.</p>
-  <p class="footnote">Environmental data: Open-Meteo (live) · NASA POWER (historical) · IMD (fallback where configured).
-     Base map © OpenStreetMap contributors.</p>
+  <div class="footer-content">
+    <div class="footer-info">
+      <p><strong>HeatWatch 3D</strong> — Smart India Hackathon prototype for estimated personalized human thermal-stress monitoring.
+         Vulnerability profiles are self-reported and for simulation purposes only; not a medical diagnosis device.</p>
+      <p class="footnote">Live Telemetry: Open-Meteo · Historical Reanalysis: NASA POWER · Local Calibration: IMD · Base GIS: OpenStreetMap &amp; CARTO.</p>
+    </div>
+    <div class="system-live-pill">
+      <i data-lucide="radio" style="width:14px;height:14px;"></i>
+      <span>3D Observatory Online</span>
+    </div>
+  </div>
 </footer>
+<script>
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+</script>
 </body>
 </html>

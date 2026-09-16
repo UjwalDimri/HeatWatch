@@ -3,12 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= typeof title !== 'undefined' && title ? title + ' · HeatWatch' : 'HeatWatch' %></title>
+  <title><%= typeof title !== 'undefined' && title ? title + ' · HeatWatch 3D' : 'HeatWatch · 3D Thermal Risk Platform' %></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css" />
   <% if (typeof extraCss !== 'undefined') { extraCss.forEach(function(href){ %>
     <link rel="stylesheet" href="<%= href %>" />
   <% }); } %>
+  <!-- 3D Graphics & Icon Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 <body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>">
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+  <script src="/js/three-scene.js"></script>
+  <script src="/js/3d-card.js"></script>
+  <script>
+    if (window.HW_3D && window.HW_3D.initAmbientParticles) {
+      window.HW_3D.initAmbientParticles('ambient-canvas');
+    }
+    if (typeof lucide !== 'undefined') {
+      window.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+    }
+  </script>

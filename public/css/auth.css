@@ -1,17 +1,141 @@
-.auth-main { display: flex; justify-content: center; padding: 2.5rem 1rem; }
-.auth-box { background: var(--panel); border: 1px solid var(--rule); border-top: 3px solid var(--shade);
-  border-radius: var(--radius); padding: 1.6rem 1.8rem; width: 100%; max-width: 26rem; }
-.auth-box-wide { max-width: 46rem; }
-.auth-sub { color: var(--ink-soft); font-size: 0.92rem; }
-.auth-box form label { display: block; margin: 0.7rem 0; font-weight: 600; }
-.auth-box form input, .auth-box form select {
-  display: block; width: 100%; margin-top: 0.25rem; padding: 0.5rem 0.6rem;
-  border: 1px solid var(--rule); border-radius: var(--radius); font: inherit; background: #fff;
+/* HeatWatch — Biometric Authorization Terminal */
+
+.auth-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem 5rem;
+  min-height: calc(100vh - 160px);
 }
-.auth-box fieldset { border: none; border-top: 1px solid var(--rule); margin: 1.2rem 0 0; padding: 0.6rem 0 0; }
-.auth-box legend { font-weight: 800; padding-right: 0.6rem; }
-.field-help { color: var(--ink-soft); font-size: 0.85rem; margin: 0.3rem 0; }
-.loc-row { display: flex; gap: 0.6rem; align-items: end; flex-wrap: wrap; }
-.loc-row label { flex: 1; }
-.loc-row input#loc-search { flex: 2; margin-top: 0; padding: 0.5rem 0.6rem; border: 1px solid var(--rule); border-radius: var(--radius); font: inherit; }
-.auth-alt { margin-top: 1rem; font-size: 0.92rem; }
+
+.auth-box {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius);
+  padding: 2.5rem 2.2rem;
+  width: 100%;
+  max-width: 28rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 242, 254, 0.1);
+  transform-style: preserve-3d;
+}
+
+.auth-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--shade), #38bdf8, var(--accent-purple));
+}
+
+.auth-box-wide {
+  max-width: 52rem;
+}
+
+.auth-box h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.auth-sub {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin: 0 0 1.8rem;
+  line-height: 1.5;
+}
+
+.auth-box form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0.85rem 0;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.auth-box form input,
+.auth-box form select {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  background: rgba(8, 15, 30, 0.8);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  transition: all 0.2s ease;
+}
+
+.auth-box form input:focus,
+.auth-box form select:focus {
+  border-color: var(--shade);
+  background: rgba(12, 22, 42, 0.95);
+  box-shadow: 0 0 12px var(--shade-glow);
+}
+
+.auth-box fieldset {
+  border: 1px solid var(--rule);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  margin: 1.4rem 0;
+  padding: 1.2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 1rem;
+}
+
+@media (max-width: 680px) {
+  .auth-box fieldset {
+    grid-template-columns: 1fr;
+  }
+}
+
+.auth-box legend {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--shade);
+  padding: 0 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.field-help {
+  grid-column: 1 / -1;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  margin: 0 0 0.4rem;
+}
+
+.loc-row {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.loc-row input#loc-search {
+  flex: 2;
+  min-width: 180px;
+}
+
+.auth-alt {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.auth-alt a {
+  font-weight: 600;
+  color: var(--shade);
+}

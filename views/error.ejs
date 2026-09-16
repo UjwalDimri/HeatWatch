@@ -1,10 +1,27 @@
 <%- include('partials/header', { title: title, bodyClass: 'auth' }) %>
 <%- include('partials/navbar') %>
+
 <main class="auth-main">
-  <div class="auth-box">
-    <h1><%= title %></h1>
-    <p><%= message %></p>
-    <p><a class="btn" href="/">Back to home</a></p>
+  <div class="auth-box card-3d" style="text-align: center;">
+    <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; color: var(--risk-vhigh);">
+      <i data-lucide="alert-octagon" style="width: 28px; height: 28px;"></i>
+    </div>
+    <h1 style="font-size: 1.6rem; margin-bottom: 0.5rem;"><%= title %></h1>
+    <p style="color: var(--ink-soft); margin-bottom: 1.8rem;"><%= message %></p>
+    <div>
+      <a class="btn btn-primary" href="/">
+        <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>Back to Home Observatory
+      </a>
+    </div>
   </div>
 </main>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.HW_3DCARD && window.HW_3DCARD.init) {
+      window.HW_3DCARD.init();
+    }
+  });
+</script>
+
 <%- include('partials/footer') %>

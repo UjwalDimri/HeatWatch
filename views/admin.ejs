@@ -1,64 +1,99 @@
-<%- include('partials/header', { title: 'System', bodyClass: 'admin', extraCss: ['/css/admin.css'] }) %>
+<%- include('partials/header', { title: 'System Telemetry & Control', bodyClass: 'admin', extraCss: ['/css/admin.css'] }) %>
 <%- include('partials/navbar') %>
+
 <main class="admin-main">
-  <h1>System administration</h1>
+  <div>
+    <h1>
+      <i data-lucide="cpu" style="width:24px;height:24px;color:var(--shade);vertical-align:-3px;margin-right:8px;"></i>
+      System Telemetry &amp; Diagnostics
+    </h1>
+    <p class="dash-sub">Hardware health, model checkpoints, real-time pipeline probes, and audit logs.</p>
+  </div>
+
   <p class="banner banner-error" id="admin-error" hidden></p>
 
-  <section class="panel">
-    <h2>System statistics</h2>
+  <section class="panel card-3d">
+    <h2>
+      <i data-lucide="activity" style="width:18px;height:18px;color:var(--shade);"></i>
+      Platform Statistics
+    </h2>
     <dl class="stat-row" id="admin-stats">
-      <div><dt>Total users</dt><dd id="a-users">—</dd></div>
-      <div><dt>Active users (24 h)</dt><dd id="a-active">—</dd></div>
-      <div><dt>Predictions</dt><dd id="a-preds">—</dd></div>
-      <div><dt>Alerts</dt><dd id="a-alerts">—</dd></div>
-      <div><dt>User profiles</dt><dd id="a-uprofiles">—</dd></div>
-      <div><dt>Synthetic profiles</dt><dd id="a-sprofiles">—</dd></div>
+      <div><dt>Total Users</dt><dd id="a-users">—</dd></div>
+      <div><dt>Active Users (24 h)</dt><dd id="a-active">—</dd></div>
+      <div><dt>Model Predictions</dt><dd id="a-preds">—</dd></div>
+      <div><dt>Dispatched Alerts</dt><dd id="a-alerts">—</dd></div>
+      <div><dt>Citizen Profiles</dt><dd id="a-uprofiles">—</dd></div>
+      <div><dt>Synthetic Profiles</dt><dd id="a-sprofiles">—</dd></div>
     </dl>
   </section>
 
-  <section class="panel">
-    <h2>API status <span class="h-note">(live probes — never hard-coded)</span></h2>
+  <section class="panel card-3d">
+    <h2>
+      <i data-lucide="radio" style="width:18px;height:18px;color:#38bdf8;"></i>
+      API Feeds &amp; Live Connectivity Probes <span class="h-note">(Real-time status probes)</span>
+    </h2>
     <table class="admin-table" id="api-status-table">
-      <thead><tr><th>Source</th><th>State</th><th>Checked</th><th>Detail</th></tr></thead>
-      <tbody><tr><td colspan="4">Probing…</td></tr></tbody>
+      <thead><tr><th>Source Feed</th><th>Status State</th><th>Last Polled</th><th>Telemetry Detail</th></tr></thead>
+      <tbody><tr><td colspan="4">Probing telemetry interfaces…</td></tr></tbody>
     </table>
   </section>
 
-  <section class="panel">
-    <h2>Data status</h2>
+  <section class="panel card-3d">
+    <h2>
+      <i data-lucide="database" style="width:18px;height:18px;color:var(--shade);"></i>
+      Data Store &amp; CSV Checkpoints
+    </h2>
     <table class="admin-table" id="data-status-table">
-      <thead><tr><th>Dataset</th><th>Present</th><th>Size</th><th>Modified</th></tr></thead>
+      <thead><tr><th>Dataset Record</th><th>Present on Disk</th><th>File Payload Size</th><th>Last Written</th></tr></thead>
       <tbody></tbody>
     </table>
   </section>
 
-  <section class="panel">
-    <h2>HTSI model</h2>
+  <section class="panel card-3d">
+    <h2>
+      <i data-lucide="brain-circuit" style="width:18px;height:18px;color:var(--accent-purple);"></i>
+      HTSI Machine Learning Architecture
+    </h2>
     <dl class="ledger" id="model-info">
-      <div><dt>Status</dt><dd id="m-status">—</dd></div>
-      <div><dt>Type</dt><dd id="m-type">—</dd></div>
-      <div><dt>Version</dt><dd id="m-version">—</dd></div>
-      <div><dt>Trained</dt><dd id="m-date">—</dd></div>
-      <div><dt>Label source</dt><dd id="m-labels">—</dd></div>
-      <div><dt>Test metrics</dt><dd id="m-metrics">—</dd></div>
+      <div><dt>Engine Status</dt><dd id="m-status">—</dd></div>
+      <div><dt>Classifier / Regressor</dt><dd id="m-type">—</dd></div>
+      <div><dt>Model Checkpoint</dt><dd id="m-version">—</dd></div>
+      <div><dt>Training Epoch Timestamp</dt><dd id="m-date">—</dd></div>
+      <div><dt>Ground-truth Label Source</dt><dd id="m-labels">—</dd></div>
+      <div><dt>Validation Metrics</dt><dd id="m-metrics">—</dd></div>
     </dl>
   </section>
 
-  <section class="panel">
-    <h2>Users</h2>
+  <section class="panel card-3d">
+    <h2>
+      <i data-lucide="users" style="width:18px;height:18px;color:var(--shade);"></i>
+      Registered User Roster
+    </h2>
     <table class="admin-table" id="users-table">
-      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Created</th><th>Last login</th></tr></thead>
+      <thead><tr><th>Full Name</th><th>Email Identity</th><th>System Role</th><th>Created Date</th><th>Last Active Session</th></tr></thead>
       <tbody></tbody>
     </table>
   </section>
 
-  <section class="panel">
-    <h2>Logs</h2>
+  <section class="panel card-3d">
+    <h2>
+      <i data-lucide="terminal" style="width:18px;height:18px;color:#38bdf8;"></i>
+      System Audit &amp; Event Log Stream
+    </h2>
     <table class="admin-table" id="logs-table">
-      <thead><tr><th>Time</th><th>Level</th><th>Category</th><th>Message</th></tr></thead>
+      <thead><tr><th>Timestamp</th><th>Level</th><th>Component</th><th>Diagnostic Payload</th></tr></thead>
       <tbody></tbody>
     </table>
   </section>
 </main>
+
 <script src="/js/admin.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.HW_3DCARD && window.HW_3DCARD.init) {
+      window.HW_3DCARD.init();
+    }
+  });
+</script>
+
 <%- include('partials/footer') %>

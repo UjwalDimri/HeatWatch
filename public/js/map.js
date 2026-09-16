@@ -1,18 +1,27 @@
 'use strict';
 
-/* GIS layer: Leaflet + OpenStreetMap base map. HeatWatch computes the risk;
-   Leaflet only visualizes it. */
+/* GIS layer: Tactical Command Dark Map + Pulsing Radar Markers.
+   HeatWatch computes the thermal risk; Leaflet visualizes it. */
 
 window.HW_MAP = (function mapModule() {
   let map;
   let markerLayer;
 
   function init(elementId) {
-    map = L.map(elementId).setView([23.3, 80.0], 5); // India view
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    map = L.map(elementId, {
+      zoomControl: false,
+    }).setView([23.3, 80.0], 5); // Center on India
+
+    // Position zoom controls cleanly in top right
+    L.control.zoom({ position: 'topright' }).addTo(map);
+
+    // High-tech CartoDB Dark Matter base map tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 18,
-      attribution: '&copy; OpenStreetMap contributors',
+      subdomains: 'abcd',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
     }).addTo(map);
+
     markerLayer = L.layerGroup().addTo(map);
     return map;
   }
@@ -26,30 +35,41 @@ window.HW_MAP = (function mapModule() {
       ['Radiation', p.solar_radiation_wm2 != null ? p.solar_radiation_wm2 + ' W/m²' : 'unavailable'],
       ['Tmrt', p.tmrt_c != null ? p.tmrt_c + ' °C' : 'unavailable'],
       ['UTCI', p.utci_c != null ? `${p.utci_c} °C (${p.utci_category || '—'})` : 'unavailable'],
-      ['HTSI', p.htsi_score != null ? p.htsi_score : 'unavailable'],
-      ['Risk', p.risk_level || 'unavailable'],
+      ['HTSI Score', p.htsi_score != null ? p.htsi_score : 'unavailable'],
+      ['Risk Level', p.risk_level || 'unavailable'],
       ['Timestamp', new Date(p.timestamp).toLocaleString()],
       ['Source', p.source === 'synthetic_demo'
         ? '<span class="src-demo">SYNTHETIC / DEMO DATA</span>'
         : p.source + (p.data_status === 'fallback' ? ' (fallback)' : '')],
     ];
-    return `<div class="hw-popup"><h3>Assessment point</h3><table>${rows
-      .map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`)
-      .join('')}</table></div>`;
+    return `<div class="hw-popup">
+      <h3>Tactical Telemetry Point</h3>
+      <table>${rows.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</table>
+    </div>`;
   }
 
   function renderPoints(points, riskColors) {
     markerLayer.clearLayers();
     points.forEach((p) => {
-      const color = riskColors[p.risk_level] || '#6b7a74';
-      const marker = L.circleMarker([p.latitude, p.longitude], {
-        radius: 9,
-        color: '#10201b',
-        weight: 1.5,
-        fillColor: color,
-        fillOpacity: 0.9,
+      const color = riskColors[p.risk_level] || '#00f2fe';
+
+      // Custom pulsing radar marker using DivIcon
+      const iconHtml = `
+        <div class="radar-marker-wrap" style="--marker-color: ${color}">
+          <div class="radar-pulse"></div>
+          <div class="radar-dot" style="background-color: ${color}; box-shadow: 0 0 10px ${color}"></div>
+        </div>
+      `;
+
+      const customIcon = L.divIcon({
+        html: iconHtml,
+        className: 'custom-radar-icon',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
       });
-      marker.bindPopup(popupHtml(p), { maxWidth: 320 });
+
+      const marker = L.marker([p.latitude, p.longitude], { icon: customIcon });
+      marker.bindPopup(popupHtml(p), { maxWidth: 340 });
       markerLayer.addLayer(marker);
     });
   }

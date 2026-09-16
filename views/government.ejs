@@ -1,29 +1,63 @@
-<%- include('partials/header', { title: 'Regional map', bodyClass: 'gov', extraCss: ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', '/css/government.css'] }) %>
+<%- include('partials/header', { title: 'Regional Tactical Map', bodyClass: 'gov', extraCss: ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', '/css/government.css'] }) %>
 <%- include('partials/navbar') %>
+
 <main class="gov-main">
   <aside class="gov-rail">
-    <h1>Regional heat risk</h1>
-    <p class="gov-sub">Latest stored assessments per monitored point, last 48 h.</p>
-    <dl class="gov-stats">
-      <div><dt>Monitored locations</dt><dd id="g-total">—</dd></div>
-      <div><dt>High risk</dt><dd id="g-high">—</dd></div>
-      <div><dt>Very high risk</dt><dd id="g-vhigh">—</dd></div>
-      <div><dt>Extreme risk</dt><dd id="g-extreme">—</dd></div>
-      <div><dt>UTCI range</dt><dd id="g-utci">—</dd></div>
-    </dl>
-    <div class="chart-block"><canvas id="chart-dist" height="180"></canvas></div>
-    <div class="legend">
-      <h2>Application risk level (HTSI)</h2>
-      <ul id="legend-list"></ul>
-      <p class="data-note">These are HeatWatch application categories derived from HTSI — kept separate from the
-         official UTCI stress scale shown per point.</p>
+    <div>
+      <h1>
+        <i data-lucide="radar" style="width:22px;height:22px;color:var(--shade);vertical-align:-3px;margin-right:6px;"></i>
+        Regional Heat Command
+      </h1>
+      <p class="gov-sub">Active surveillance points, rolling 48-hour telemetry window.</p>
     </div>
+
+    <dl class="gov-stats">
+      <div>
+        <dt><i data-lucide="map-pin" style="width:12px;height:12px;margin-right:3px;"></i>Monitored Nodes</dt>
+        <dd id="g-total">—</dd>
+      </div>
+      <div>
+        <dt><i data-lucide="alert-triangle" style="width:12px;height:12px;margin-right:3px;color:var(--risk-high);"></i>High Risk</dt>
+        <dd id="g-high">—</dd>
+      </div>
+      <div>
+        <dt><i data-lucide="alert-octagon" style="width:12px;height:12px;margin-right:3px;color:var(--risk-vhigh);"></i>Very High Risk</dt>
+        <dd id="g-vhigh">—</dd>
+      </div>
+      <div>
+        <dt><i data-lucide="flame" style="width:12px;height:12px;margin-right:3px;color:var(--risk-extreme);"></i>Extreme Risk</dt>
+        <dd id="g-extreme">—</dd>
+      </div>
+      <div>
+        <dt><i data-lucide="gauge" style="width:12px;height:12px;margin-right:3px;"></i>Regional UTCI Range</dt>
+        <dd id="g-utci">—</dd>
+      </div>
+    </dl>
+
+    <div class="chart-block" style="background: rgba(4, 8, 18, 0.6);">
+      <canvas id="chart-dist" height="180"></canvas>
+    </div>
+
+    <div class="legend">
+      <h2>
+        <i data-lucide="layers" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i>
+        Risk Category Classification (HTSI)
+      </h2>
+      <ul id="legend-list"></ul>
+      <p class="data-note">
+        HTSI values reflect personalized and regional vulnerability tiers, calibrated distinct from the physical UTCI thermal stress baseline.
+      </p>
+    </div>
+
     <p class="banner banner-error" id="gov-error" hidden></p>
-    <p class="data-note">Hotspots are computed by HeatWatch (weather → Tmrt + vapour pressure → UTCI → profile →
-       HTSI). OpenStreetMap is the base map only; Leaflet only visualizes.</p>
+    <p class="data-note">
+      Hotspot clusters are derived continuously via the HeatWatch pipeline. Base vector tiles served via CartoDB Dark Matter.
+    </p>
   </aside>
-  <div id="map" role="application" aria-label="Heat risk map"></div>
+
+  <div id="map" role="application" aria-label="Tactical Heat Risk Surveillance Map"></div>
 </main>
+
 <script>
   window.HEATWATCH_RISK_COLORS = <%- JSON.stringify(riskColors) %>;
 </script>
@@ -32,6 +66,5 @@
 <script src="/js/charts.js"></script>
 <script src="/js/map.js"></script>
 <script src="/js/government.js"></script>
+
 <%- include('partials/footer') %>
-
-
