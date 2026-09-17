@@ -60,10 +60,15 @@ async function fetchLive(latitude, longitude) {
   const hit = cache.get(key);
   if (hit && Date.now() - hit.at < CACHE_TTL_MS) return hit.value;
 
-  const url =
-    `${BASE}?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}` +
+  const base = process.env.OPEN_METEO_API_BASE || BASE;
+  let url =
+    `${base}?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}` +
     `&hourly=${HOURLY_VARS.join(',')}` +
     `&windspeed_unit=ms&timezone=UTC&past_days=1&forecast_days=1`;
+
+  if (process.env.OPEN_METEO_API_KEY) {
+    url += `&apikey=${encodeURIComponent(process.env.OPEN_METEO_API_KEY)}`;
+  }
 
   // HTTP 429 (rate limit) is per-minute and often affects shared hosting IPs;
   // a short backoff-and-retry usually clears it without bothering the user.
@@ -81,6 +86,19 @@ async function fetchLive(latitude, longitude) {
     if (attempt < 3) await new Promise((r) => setTimeout(r, attempt * 4000));
   }
   if (!res.ok) {
+    // If rate-limited and we have ANY cached result (even slightly older than TTL), serve it
+    if (res.status === 429 && hit) {
+      lastStatus = { state: 'fallback', checkedAt: new Date().toISOString(), detail: 'HTTP 429 (served stale cache)' };
+      const stale = JSON.parse(JSON.stringify(hit.value));
+      stale.fallbackUsed = true;
+      stale.record.dataStatus = 'fallback';
+      stale.record.notes = [
+        ...(stale.record.notes || []),
+        'Open-Meteo rate-limited on shared hosting IP (HTTP 429). Serving recent cached observation.',
+      ];
+      return stale;
+    }
+
     lastStatus = { state: 'error', checkedAt: new Date().toISOString(), detail: `HTTP ${res.status}` };
     const e = new Error(res.status === 429
       ? 'Open-Meteo is rate limiting this server (HTTP 429, retried 3x) — try again in a minute.'
@@ -91,10 +109,10 @@ async function fetchLive(latitude, longitude) {
 
   // Rate limiters occasionally answer 200 with plain text instead of JSON —
   // read as text first so a non-JSON reply produces a clear, honest error.
-  const raw = await res.text();
+  const raw = typeof res.text === 'function' ? await res.text() : JSON.stringify(await res.json());
   let body;
   try {
-    body = JSON.parse(raw);
+    body = typeof raw === 'string' ? JSON.parse(raw) : raw;
   } catch (parseErr) {
     lastStatus = { state: 'error', checkedAt: new Date().toISOString(), detail: 'non-JSON reply (likely rate limiting)' };
     const e = new Error('Open-Meteo sent a non-JSON reply — usually temporary rate limiting; try again in a few minutes.');
