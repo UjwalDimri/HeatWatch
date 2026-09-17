@@ -1,13 +1,67 @@
 <footer class="site-footer">
-  <div class="footer-content">
-    <div class="footer-info">
-      <p><strong>HeatWatch 3D</strong> — Smart India Hackathon prototype for estimated personalized human thermal-stress monitoring.
-         Vulnerability profiles are self-reported and for simulation purposes only; not a medical diagnosis device.</p>
-      <p class="footnote">Live Telemetry: Open-Meteo · Historical Reanalysis: NASA POWER · Local Calibration: IMD · Base GIS: OpenStreetMap &amp; CARTO.</p>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a class="brand" href="/">
+          <div class="brand-icon">
+            <i data-lucide="flame" style="width:16px;height:16px;color:#041226;"></i>
+          </div>
+          Heat<span>Watch</span>
+        </a>
+        <p class="footer-tagline">Personalized heat intelligence.</p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Data</h3>
+        <ul class="footer-data-list">
+          <li>
+            <span class="footer-source">Open-Meteo</span>
+            <span class="footer-meta footer-meta-live"><span class="footer-live-dot" aria-hidden="true"></span>Live</span>
+          </li>
+          <li>
+            <span class="footer-source">NASA POWER</span>
+            <span class="footer-meta">Historical</span>
+          </li>
+          <li>
+            <span class="footer-source">IMD</span>
+            <span class="footer-meta">Fallback</span>
+          </li>
+          <li>
+            <span class="footer-source">OpenStreetMap</span>
+            <span class="footer-meta">GIS</span>
+          </li>
+        </ul>
+      </div>
+
+      <nav class="footer-col footer-links" aria-label="Explore">
+        <h3 class="footer-heading">Explore</h3>
+        <a href="/login">Citizen Portal</a>
+        <a href="/government">Government GIS</a>
+        <a href="/admin">Admin Portal</a>
+        <a href="https://github.com/UjwalDimri/HeatWatch" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </nav>
+
+      <div class="footer-col footer-status">
+        <h3 class="footer-heading">Status</h3>
+        <p class="footer-system">
+          <span class="footer-live-dot" aria-hidden="true"></span>
+          System Online
+        </p>
+      </div>
     </div>
-    <div class="system-live-pill">
-      <i data-lucide="radio" style="width:14px;height:14px;"></i>
-      <span>3D Observatory Online</span>
+
+    <p class="footer-disclaimer">
+      <i data-lucide="shield" style="width:13px;height:13px;"></i>
+      <span>
+        <strong>Research prototype</strong> · For awareness and research use only.
+        Not a medical device. Vulnerability profiles are synthetic/self-reported and not medically validated.
+        Data: Open-Meteo · NASA POWER · IMD · OpenStreetMap &amp; CARTO.
+      </span>
+    </p>
+
+    <div class="footer-bottom">
+      <p>HeatWatch</p>
+      <p>Built for a cooler, safer tomorrow.</p>
     </div>
   </div>
 </footer>
