@@ -53,6 +53,8 @@ async function start() {
   try {
     await connectDatabase();
     console.log('MongoDB connected.');
+    const { ensureInitialData } = require('./config/bootstrap');
+    await ensureInitialData();
   } catch (err) {
     console.error(`MongoDB connection failed: ${err.message}`);
     console.error('Start MongoDB and check MONGODB_URI in .env, then restart HeatWatch.');

@@ -14,15 +14,33 @@
       Unified credential gateway for citizens, municipal officials, and system operators.
     </p>
 
+    <!-- Quick Demo Role Switcher -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--rule);border-radius:var(--radius-sm);padding:0.75rem;margin-bottom:1.2rem;">
+      <span style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--shade);display:block;margin-bottom:0.4rem;font-weight:700;">
+        <i data-lucide="key-round" style="width:12px;height:12px;vertical-align:-2px;margin-right:3px;"></i>Quick Demo Autofill
+      </span>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;">
+        <button type="button" class="btn btn-quiet" id="btn-demo-admin" style="font-size:0.78rem;padding:0.35rem 0.2rem;border:1px solid var(--panel-border);">
+          Admin
+        </button>
+        <button type="button" class="btn btn-quiet" id="btn-demo-gov" style="font-size:0.78rem;padding:0.35rem 0.2rem;border:1px solid var(--panel-border);">
+          Government
+        </button>
+        <button type="button" class="btn btn-quiet" id="btn-demo-citizen" style="font-size:0.78rem;padding:0.35rem 0.2rem;border:1px solid var(--panel-border);">
+          Citizen
+        </button>
+      </div>
+    </div>
+
     <form id="login-form" novalidate>
       <label>
         <span><i data-lucide="mail" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Email Address</span>
-        <input type="email" name="email" required autocomplete="email" placeholder="name@domain.com">
+        <input type="email" name="email" id="login-email" required autocomplete="email" placeholder="name@domain.com">
       </label>
 
       <label>
         <span><i data-lucide="key" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Access Password</span>
-        <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+        <input type="password" name="password" id="login-password" required autocomplete="current-password" placeholder="••••••••">
       </label>
 
       <p class="form-error banner" id="login-error" role="alert" hidden></p>
@@ -39,16 +57,34 @@
 </main>
 
 <script>
-document.getElementById('login-form').addEventListener('submit', async (e) => {
+const form = document.getElementById('login-form');
+const emailInput = document.getElementById('login-email');
+const passInput = document.getElementById('login-password');
+
+document.getElementById('btn-demo-admin')?.addEventListener('click', () => {
+  emailInput.value = 'admin@heatwatch.demo';
+  passInput.value = 'heatwatch-demo';
+});
+
+document.getElementById('btn-demo-gov')?.addEventListener('click', () => {
+  emailInput.value = 'government@heatwatch.demo';
+  passInput.value = 'heatwatch-demo';
+});
+
+document.getElementById('btn-demo-citizen')?.addEventListener('click', () => {
+  emailInput.value = 'citizen@heatwatch.demo';
+  passInput.value = 'heatwatch-demo';
+});
+
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const f = e.target;
   const errEl = document.getElementById('login-error');
   errEl.hidden = true;
   try {
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: f.email.value, password: f.password.value }),
+      body: JSON.stringify({ email: emailInput.value, password: passInput.value }),
     });
     const body = await res.json();
     if (res.ok) {
