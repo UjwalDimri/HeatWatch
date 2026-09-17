@@ -134,6 +134,10 @@ body.gov {
   z-index: 1;
 }
 
+#map .leaflet-tile {
+  filter: brightness(0.65) invert(1) contrast(1.7) hue-rotate(185deg) saturate(0.35);
+}
+
 /* Custom Tactical Leaflet Popups */
 .leaflet-popup-content-wrapper {
   background: rgba(13, 22, 41, 0.92) !important;

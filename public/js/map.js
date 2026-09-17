@@ -15,11 +15,10 @@ window.HW_MAP = (function mapModule() {
     // Position zoom controls cleanly in top right
     L.control.zoom({ position: 'topright' }).addTo(map);
 
-    // High-tech CartoDB Dark Matter base map tiles
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // Free official OpenStreetMap tile layer (no API key required)
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
-      subdomains: 'abcd',
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
     markerLayer = L.layerGroup().addTo(map);
